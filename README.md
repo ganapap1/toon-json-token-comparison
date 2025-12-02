@@ -60,7 +60,7 @@ It then measures and displays the actual token usage, cost savings, and efficien
 
 ## 🌐 Interactive Web Demo
 
-**Try it now:** [Live Demo](https://ganapap1.github.io/toon-json-token-comparison/)
+**Try it now:** coming soon on YouTube
 
 - ✅ Single-file HTML application (no installation required)
 - ✅ Real-time comparison with OpenAI, Anthropic, and Google AI APIs
@@ -151,7 +151,7 @@ At scale (100K requests/month):
 ## 📦 Installation & Usage
 
 ### Option 1: Use Live Demo
-Visit: [https://ganapap1.github.io/toon-json-token-comparison/](https://ganapap1.github.io/toon-json-token-comparison/)
+Visit: coming Soon on YouTube
 
 ### Option 2: Clone and Run Locally
 ```bash
