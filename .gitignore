@@ -1,5 +1,6 @@
 # Exclude GP_Doc folder
 GP_Doc/
+GP_Doc Do Not Sync/
 
 # Python
 __pycache__/
@@ -36,6 +37,7 @@ env/
 # IDE
 .vscode/
 .idea/
+.claude/
 *.swp
 *.swo
 *~
