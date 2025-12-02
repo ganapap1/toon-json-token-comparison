@@ -75,24 +75,65 @@ TOON uses a **tabular format** that eliminates repetitive JSON keys—perfect fo
 
 **JSON (Traditional) - Financial Data:**
 ```json
-[
-  {"metric": "Total Revenue", "2023": 14805900, "2022": 17025000, "2021": 14093300},
-  {"metric": "Gross Profit", "2023": 4547300, "2022": 5251300, "2021": 4490300},
-  {"metric": "EBITDA", "2023": 2003200, "2022": 2740700, "2021": 2170500},
-  {"metric": "Current Ratio", "2023": 5.66, "2022": 3.55, "2021": 4.16}
-]
+{
+  "meta": {
+    "company_name": "Demo Company",
+    "currency": "USD"
+  },
+  "statements": {
+    "income_statement": [
+      {
+        "2021": 14093300,
+        "2022": 17025000,
+        "2023": 14805900,
+        "Line Item": "Total Revenue"
+      },
+      {
+        "2021": 4490300,
+        "2022": 5251300,
+        "2023": 4547300,
+        "Line Item": "Gross Profit"
+      }
+    ]
+  },
+  "key_ratios": [
+    {
+      "year": "2023",
+      "gross_profit_margin": 30.72,
+      "net_profit_margin": 9.05,
+      "current_ratio": 5.66,
+      "debt_to_equity": 0.36,
+      "roe": 17.33
+    },
+    {
+      "year": "2022",
+      "gross_profit_margin": 30.84,
+      "net_profit_margin": 10.83,
+      "current_ratio": 3.55,
+      "debt_to_equity": 0.42,
+      "roe": 23.88
+    }
+  ]
+}
 ```
 
 **TOON (Optimized):**
 ```
-metric|2023|2022|2021
-Total Revenue|14805900|17025000|14093300
-Gross Profit|4547300|5251300|4490300
-EBITDA|2003200|2740700|2170500
-Current Ratio|5.66|3.55|4.16
+meta:
+  company_name: "Demo Company"
+  currency: USD
+statements:
+  income_statement:
+[2,]{2021,2022,2023,Line Item}:
+      14093300,17025000,14805900,Total Revenue
+      4490300,5251300,4547300,Gross Profit
+key_ratios:
+[2,]{year,gross_profit_margin,net_profit_margin,current_ratio,debt_to_equity,roe}:
+    2023,30.72,9.05,5.66,0.36,17.33
+    2022,30.84,10.83,3.55,0.42,23.88
 ```
 
-By declaring column headers (years/metrics) once instead of repeating them in every row, TOON eliminates redundant tokens. This typically saves **30-50% on input tokens** when sending financial data with calculated ratios to AI for analysis!
+**Notice the difference**: JSON repeats keys like "2021", "2022", "2023", "Line Item" in every row, and ratio keys like "gross_profit_margin", "current_ratio", "roe" for every year. TOON declares these headers once using the tabular format `[rows,]{column_headers}:`, then lists only the values. This typically saves **30-50% on input tokens** when sending financial data with calculated ratios to AI for analysis!
 
 ## 📊 Example Results
 
@@ -231,29 +272,104 @@ OPENAI_API_KEY=your_key_here
 
 ## Sample Output
 
-### JSON Format
+### JSON Format (Full Financial Data)
 ```json
 {
-  "users": [
+  "meta": {
+    "company_name": "Demo Company",
+    "currency": "USD",
+    "note": "Financial data for demonstration"
+  },
+  "statements": {
+    "income_statement": [
+      {
+        "2021": 14093300,
+        "2022": 17025000,
+        "2023": 14805900,
+        "Line Item": "Total Revenue"
+      },
+      {
+        "2021": 9603000,
+        "2022": 11773700,
+        "2023": 10258600,
+        "Line Item": "Total Cost of Sales"
+      },
+      {
+        "2021": 1417400,
+        "2022": 1844200,
+        "2023": 1340100,
+        "Line Item": "Net Income"
+      }
+    ],
+    "balance_sheet": [
+      {
+        "2021": 300500,
+        "2022": 1173400,
+        "2023": 1080200,
+        "Line Item": "Cash"
+      },
+      {
+        "2021": 9536000,
+        "2022": 10329900,
+        "2023": 10480300,
+        "Line Item": "Total Assets"
+      }
+    ]
+  },
+  "key_ratios": [
     {
-      "id": 1,
-      "name": "Alice",
-      "role": "admin",
-      "country": "IN",
-      "active": true,
-      "score": 87.5
+      "year": "2023",
+      "gross_profit_margin": 30.72,
+      "net_profit_margin": 9.05,
+      "operating_margin": 13.54,
+      "roe": 17.33,
+      "roa": 12.78,
+      "current_ratio": 5.66,
+      "quick_ratio": 4.92,
+      "debt_to_equity": 0.36,
+      "asset_turnover": 1.41,
+      "inventory_turnover": 5.02
+    },
+    {
+      "year": "2022",
+      "gross_profit_margin": 30.84,
+      "net_profit_margin": 10.83,
+      "operating_margin": 16.08,
+      "roe": 23.88,
+      "roa": 17.86,
+      "current_ratio": 3.55,
+      "quick_ratio": 2.89,
+      "debt_to_equity": 0.42,
+      "asset_turnover": 1.65,
+      "inventory_turnover": 5.9
     }
   ]
 }
 ```
 
-### TOON Format
+### TOON Format (Same Data, Optimized)
 ```
-users[3,]{id,name,role,country,active,score}:
-  1,Alice,admin,IN,true,87.5
-  2,Bob,user,AE,false,73.0
-  3,Charlie,analyst,UK,true,91.2
+meta:
+  company_name: "Demo Company"
+  currency: USD
+  note: "Financial data for demonstration"
+statements:
+  income_statement:
+[3,]{2021,2022,2023,Line Item}:
+      14093300,17025000,14805900,Total Revenue
+      9603000,11773700,10258600,Total Cost of Sales
+      1417400,1844200,1340100,Net Income
+  balance_sheet:
+[2,]{2021,2022,2023,Line Item}:
+      300500,1173400,1080200,Cash
+      9536000,10329900,10480300,Total Assets
+key_ratios:
+[2,]{year,gross_profit_margin,net_profit_margin,operating_margin,roe,roa,current_ratio,quick_ratio,debt_to_equity,asset_turnover,inventory_turnover}:
+    2023,30.72,9.05,13.54,17.33,12.78,5.66,4.92,0.36,1.41,5.02
+    2022,30.84,10.83,16.08,23.88,17.86,3.55,2.89,0.42,1.65,5.9
 ```
+
+**The key difference**: Notice how in JSON, every financial ratio repeats all 10+ key names for each year. In the `key_ratios` section alone, that's 20+ repetitions of "gross_profit_margin", "current_ratio", "roe", etc. TOON declares them once as column headers and lists only the values!
 
 ## 💼 Use Cases
 
