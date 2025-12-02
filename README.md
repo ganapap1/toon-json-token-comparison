@@ -3,9 +3,21 @@
 [![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://ganapap1.github.io/toon-json-token-comparison/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A powerful interactive web tool that demonstrates token efficiency differences between JSON and TOON (Token Oriented Object Notation) formats when sending structured data to Large Language Models (LLMs).
+A powerful interactive web tool that demonstrates token efficiency differences between JSON and TOON (Token Oriented Object Notation) formats when sending financial statements, calculated ratios, and structured data to Large Language Models (LLMs) for analysis.
 
 ![TOON vs JSON Comparison Tool](screenshot.png)
+
+## 💡 Why This Matters for Financial Analysis
+
+When you send financial statements with calculated ratios to AI (GPT-4, Claude, Gemini) for analysis, **you're paying for every token**. JSON format repeats keys like "Total Revenue", "Gross Profit", "Current Ratio" for every single data point.
+
+**TOON eliminates this repetition**, saving you **30-50% on input tokens**—directly reducing your AI API costs without changing your application logic.
+
+Perfect for:
+- 🏦 Financial institutions analyzing multiple companies
+- 📊 Accounting firms using AI for statement reviews
+- 💼 Investment platforms with AI-powered insights
+- 📈 CFO dashboards with automated financial commentary
 
 ## 🎯 What Does This Tool Do?
 
@@ -42,7 +54,8 @@ It then measures and displays the actual token usage, cost savings, and efficien
 - **Responsive Design**: Works on desktop, tablet, and mobile
 
 ### 🚀 Demo Data
-- Pre-loaded financial data for quick testing
+- Pre-loaded financial statement data (2020-2023) with P&L, Balance Sheet, and Cash Flow
+- Includes calculated financial ratios for comprehensive testing
 - "Load Demo Financial Data" button for instant comparison
 
 ## 🌐 Interactive Web Demo
@@ -58,26 +71,28 @@ It then measures and displays the actual token usage, cost savings, and efficien
 
 ## 🧪 How TOON Works
 
-TOON uses a **tabular format** that eliminates repetitive JSON keys:
+TOON uses a **tabular format** that eliminates repetitive JSON keys—perfect for financial statements and ratio analysis:
 
-**JSON (Traditional):**
+**JSON (Traditional) - Financial Data:**
 ```json
 [
-  {"name": "Alice", "age": 30, "city": "NYC"},
-  {"name": "Bob", "age": 25, "city": "LA"},
-  {"name": "Carol", "age": 35, "city": "Chicago"}
+  {"metric": "Total Revenue", "2023": 14805900, "2022": 17025000, "2021": 14093300},
+  {"metric": "Gross Profit", "2023": 4547300, "2022": 5251300, "2021": 4490300},
+  {"metric": "EBITDA", "2023": 2003200, "2022": 2740700, "2021": 2170500},
+  {"metric": "Current Ratio", "2023": 5.66, "2022": 3.55, "2021": 4.16}
 ]
 ```
 
 **TOON (Optimized):**
 ```
-name|age|city
-Alice|30|NYC
-Bob|25|LA
-Carol|35|Chicago
+metric|2023|2022|2021
+Total Revenue|14805900|17025000|14093300
+Gross Profit|4547300|5251300|4490300
+EBITDA|2003200|2740700|2170500
+Current Ratio|5.66|3.55|4.16
 ```
 
-By declaring keys once as headers (like a spreadsheet), TOON eliminates redundant tokens. This typically saves **30-50% on input tokens**!
+By declaring column headers (years/metrics) once instead of repeating them in every row, TOON eliminates redundant tokens. This typically saves **30-50% on input tokens** when sending financial data with calculated ratios to AI for analysis!
 
 ## 📊 Example Results
 
@@ -141,8 +156,8 @@ python json_vs_toon_demo.py
    - Keys are stored locally in your browser only
 
 4. **Load Demo Data or Paste Your Own**
-   - Click "Load Demo Financial Data" for a quick test
-   - Or paste your own JSON array data
+   - Click "Load Demo Financial Data" to test with real financial statements and ratios
+   - Or paste your own financial data in JSON array format
 
 5. **Compare Formats**
    - Click "Compare Formats" button
@@ -240,27 +255,43 @@ users[3,]{id,name,role,country,active,score}:
   3,Charlie,analyst,UK,true,91.2
 ```
 
-## Use Cases
+## 💼 Use Cases
 
 TOON is ideal for:
-- Financial data (statements, transactions, GL entries)
-- Tabular data with repeated structures
-- Database query results
-- Survey responses
-- Log files and analytics data
-- Any structured data sent to LLMs
+- **Financial Analysis**: Profit & Loss, Balance Sheets, Cash Flow Statements with calculated ratios
+- **Financial Ratios**: Current Ratio, Debt-to-Equity, ROA, ROE, Gross Margin sent to AI
+- **Multi-Year Data**: Financial statements across multiple years/periods
+- **GL Entries & Transactions**: Structured accounting data
+- **Database Query Results**: Any tabular data retrieved from databases
+- **Survey Responses & Analytics**: Repeated structured data
+- **Any Structured Data** sent to LLMs for analysis
 
-## Cost Savings Example
+### Real-World Benefits for Financial Applications
+When you send financial statements with calculated ratios (like liquidity ratios, profitability ratios, efficiency ratios) to AI for analysis, JSON repeats keys like "metric", "2023", "2022", "2021" for every single line item. With TOON, these are declared once, cutting your token costs by 30-50% per analysis request.
 
-Using GPT-4o-mini at **$0.150 per 1M input tokens**:
+## 💰 Cost Savings Example
 
-For 1,000 financial analysis prompts:
-- JSON: 2,858 tokens × 1,000 = 2,858,000 tokens = **$0.43**
-- TOON: 1,444 tokens × 1,000 = 1,444,000 tokens = **$0.22**
-- **Savings: $0.21 per 1,000 prompts (49%)**
+### Financial Analysis Scenario
 
-For enterprise scale (1M prompts/year):
-- **Annual savings: $210**
+Using GPT-4o at **$2.50 per 1M input tokens**:
+
+**Scenario**: Financial firm analyzing company statements with P&L, Balance Sheet, Cash Flow, and 15+ calculated ratios
+
+For **10,000 financial analysis requests per month**:
+- JSON format: ~1,200 input tokens per request
+- TOON format: ~700 input tokens per request (40% reduction)
+- **Savings per month**: (500 tokens × 10,000 requests × $2.50) / 1M = **$12.50/month**
+- **Annual savings: $150**
+
+For **enterprise scale (100,000 requests/month)**:
+- **Monthly savings: $125**
+- **Annual savings: $1,500**
+
+### Why This Matters for Financial Applications
+- Financial institutions running automated analysis on multiple companies daily
+- Accounting firms using AI for statement reviews and ratio interpretation
+- Investment platforms providing AI-powered financial insights
+- CFO dashboards with AI-generated commentary on financial metrics
 
 ## Technical Details
 
@@ -269,15 +300,43 @@ For enterprise scale (1M prompts/year):
 - **TOON Library**: toon-python (0.1.2)
 - **Data Source**: Financial statements (2020-2023)
 
-## YouTube Video Demo Script
+## 🎥 YouTube Video Demo Script
 
-1. **Introduction** - Explain token costs in LLM APIs
-2. **Problem** - Show verbose JSON format
-3. **Solution** - Introduce TOON format
-4. **Demo 1** - Run simple comparison (43.5% savings)
-5. **Demo 2** - Run financial demo (49.5% savings)
-6. **Cost Analysis** - Show real-world cost implications
-7. **Conclusion** - When to use TOON
+### Video Overview (3:30 duration)
+
+1. **Introduction & Hook** (0:00-0:20)
+   - Address the audience: "Are you spending too much on AI API calls for financial analysis?"
+   - Promise: 30-50% cost reduction without code changes
+   - What you'll see: Live comparison with financial data and calculated ratios
+
+2. **The Problem** (0:20-0:50)
+   - JSON repetition issue with financial statements
+   - Every metric repeats keys: 'Total Revenue', 'Gross Profit', 'EBITDA', 'Current Ratio'
+   - Real cost impact for financial institutions and accounting firms
+
+3. **Introducing the Solution** (0:50-1:30)
+   - TOON format: tabular/spreadsheet-like structure
+   - Live demo walkthrough
+   - Loading financial statement with P&L, Balance Sheet, Cash Flow, and calculated ratios
+   - Sending to Claude AI in both formats
+
+4. **Walking Through Results** (1:30-2:20)
+   - Plain language summary showing 40%+ savings
+   - Explanation of two token numbers: input savings vs. total savings
+   - Cost impact table: savings at 10K and 100K requests/month
+   - Real dollar amounts: $12-$120+ monthly savings
+
+5. **Exploring the Metrics** (2:20-2:50)
+   - Detailed token savings breakdown
+   - Tooltip demonstrations
+   - Color coding explanation (green for savings, amber for AI variance)
+   - Input vs. output token differences
+
+6. **Call to Action & Closing** (2:50-3:30)
+   - Use cases: financial analysis tools, automated reporting, investment platforms
+   - Try with your own financial datasets
+   - GitHub link in description
+   - Like and subscribe
 
 ## Files Fixed
 
