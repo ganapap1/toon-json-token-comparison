@@ -897,7 +897,8 @@
           <strong>About this demo:</strong>
           This tool compares JSON (traditional format) vs TOON (Token Oriented
           Object Notation) to show token savings when sending financial data to
-          LLMs. Demo financial data with pre-calculated ratios is automatically used. TOON typically saves 30-50% tokens!
+          LLMs. Demo financial data with pre-calculated ratios is automatically
+          used. TOON typically saves 30-50% tokens!
         </div>
 
         <div class="control-row">
@@ -921,22 +922,32 @@
         </div>
 
         <div class="control-row">
-          <div class="control-group" style="display: none;">
+          <div class="control-group" style="display: none">
             <label for="dataInput">Structured Data (JSON format):</label>
             <textarea
               id="dataInput"
-              placeholder='Demo financial data will be used automatically'
+              placeholder="Demo financial data will be used automatically"
             ></textarea>
           </div>
 
-          <div class="control-group" style="display: none;">
+          <div class="control-group" style="display: none">
             <label for="promptTemplate">Prompt Template:</label>
             <textarea
               id="promptTemplate"
               placeholder="Enter your prompt template. Use {DATA} as placeholder for the data."
-            >Analyze the following financial data and provide key insights.
+            >
+Analyze the following financial data and provide key insights.
 
-{DATA}</textarea
+            {DATA}You are a senior financial analyst. Analyse the company’s financial performance using the data I provide.
+
+            Use the data below (in JSON or TOON format) and structure your answer under exactly these four headings (Markdown H2):
+
+            ## 1. Revenue and Profitability
+            ## 2. Balance Sheet and Financial Position
+            ## 3. Cash Flow Quality
+            ## 4. Key Ratios and Overall Assessment
+
+            {DATA}</textarea
             >
           </div>
         </div>
@@ -1198,7 +1209,9 @@
       <div class="footer">
         <p>
           Created for demonstrating TOON vs JSON token efficiency |
-          <a href="https://github.com/ganapap1/toon-json-token-comparison" target="_blank"
+          <a
+            href="https://github.com/ganapap1/toon-json-token-comparison"
+            target="_blank"
             >View on GitHub</a
           >
           |
@@ -1246,17 +1259,62 @@
           },
           statements: {
             income_statement: [
-              { "Line Item": "Total Revenue", 2021: 14093300, 2022: 17025000, 2023: 14805900 },
-              { "Line Item": "Total Cost of Sales", 2021: 9603000, 2022: 11773700, 2023: 10258600 },
-              { "Line Item": "Gross Profit", 2021: 4490300, 2022: 5251300, 2023: 4547300 },
-              { "Line Item": "Operating Expenses", 2021: 2319800, 2022: 2510600, 2023: 2544100 },
-              { "Line Item": "Net Income", 2021: 1417400, 2022: 1844200, 2023: 1340100 },
+              {
+                "Line Item": "Total Revenue",
+                2021: 14093300,
+                2022: 17025000,
+                2023: 14805900,
+              },
+              {
+                "Line Item": "Total Cost of Sales",
+                2021: 9603000,
+                2022: 11773700,
+                2023: 10258600,
+              },
+              {
+                "Line Item": "Gross Profit",
+                2021: 4490300,
+                2022: 5251300,
+                2023: 4547300,
+              },
+              {
+                "Line Item": "Operating Expenses",
+                2021: 2319800,
+                2022: 2510600,
+                2023: 2544100,
+              },
+              {
+                "Line Item": "Net Income",
+                2021: 1417400,
+                2022: 1844200,
+                2023: 1340100,
+              },
             ],
             balance_sheet: [
-              { "Line Item": "Cash", 2021: 300500, 2022: 1173400, 2023: 1080200 },
-              { "Line Item": "Inventory", 2021: 2065000, 2022: 1995300, 2023: 2043200 },
-              { "Line Item": "Total Assets", 2021: 9536000, 2022: 10329900, 2023: 10480300 },
-              { "Line Item": "Total Liabilities", 2021: 3442300, 2022: 3234000, 2023: 2747500 },
+              {
+                "Line Item": "Cash",
+                2021: 300500,
+                2022: 1173400,
+                2023: 1080200,
+              },
+              {
+                "Line Item": "Inventory",
+                2021: 2065000,
+                2022: 1995300,
+                2023: 2043200,
+              },
+              {
+                "Line Item": "Total Assets",
+                2021: 9536000,
+                2022: 10329900,
+                2023: 10480300,
+              },
+              {
+                "Line Item": "Total Liabilities",
+                2021: 3442300,
+                2022: 3234000,
+                2023: 2747500,
+              },
             ],
           },
           key_ratios: [
@@ -1314,7 +1372,6 @@
           ],
         };
       }
-
 
       // Simple TOON encoder (JavaScript implementation)
       function encodeToTOON(obj, indent = 0) {
@@ -1468,7 +1525,6 @@
           totalTokens: data.usage.total_tokens,
         };
       }
-
 
       // Tooltip Data Configuration
       const tooltipData = {
