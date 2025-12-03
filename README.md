@@ -9,7 +9,7 @@ A powerful interactive web tool that demonstrates token efficiency differences b
 
 ## 💡 Why This Matters for Financial Analysis
 
-When you send financial statements with calculated ratios to AI (GPT-4, Claude, Gemini) for analysis, **you're paying for every token**. JSON format repeats keys like "Total Revenue", "Gross Profit", "Current Ratio" for every single data point.
+When you send financial statements with calculated ratios to AI (GPT-4, Claude) for analysis, **you're paying for every token**. JSON format repeats keys like "Total Revenue", "Gross Profit", "Current Ratio" for every single data point.
 
 **TOON eliminates this repetition**, saving you **30-50% on input tokens**—directly reducing your AI API costs without changing your application logic.
 
@@ -30,7 +30,7 @@ It then measures and displays the actual token usage, cost savings, and efficien
 ## ✨ Key Features
 
 ### 📊 Real-Time Token Analysis
-- Live comparison using OpenAI, Anthropic, or Google AI APIs
+- Live comparison using OpenAI or Anthropic APIs
 - Actual token counts from LLM providers (not estimates)
 - Side-by-side format visualization
 
@@ -63,7 +63,7 @@ It then measures and displays the actual token usage, cost savings, and efficien
 **Try it now:** coming soon on YouTube
 
 - ✅ Single-file HTML application (no installation required)
-- ✅ Real-time comparison with OpenAI, Anthropic, and Google AI APIs
+- ✅ Real-time comparison with OpenAI and Anthropic APIs
 - ✅ Side-by-side JSON vs TOON display
 - ✅ Live token counting and savings calculation
 - ✅ Beautiful, responsive UI with dark green theme
@@ -184,21 +184,23 @@ python json_vs_toon_demo.py
 1. **Select Your LLM Provider**
    - OpenAI (GPT models)
    - Anthropic (Claude models)
-   - Google AI (Gemini models)
 
 2. **Choose a Model**
-   - GPT-4o Mini (cheapest)
-   - GPT-4o
-   - Claude Sonnet/Opus
-   - Gemini Pro/Flash
+   - **OpenAI:**
+     - GPT-4o Mini (Cheapest)
+     - GPT-4o
+     - GPT-3.5 Turbo
+   - **Anthropic:**
+     - Claude 3.5 Haiku (Cheapest)
+     - Claude 3.5 Sonnet
 
 3. **Enter Your API Key**
-   - Get keys from provider dashboards
-   - Keys are stored locally in your browser only
+   - Get keys from provider dashboards ([OpenAI](https://platform.openai.com/api-keys) | [Anthropic](https://console.anthropic.com/))
+   - Keys are stored locally in your browser only (not sent to any server except the API provider)
 
 4. **Load Demo Data or Paste Your Own**
    - Click "Load Demo Financial Data" to test with real financial statements and ratios
-   - Or paste your own financial data in JSON array format
+   - Or paste your own financial data in JSON format
 
 5. **Compare Formats**
    - Click "Compare Formats" button
@@ -483,7 +485,7 @@ Hover over the ⓘ icons to see:
 ## 🛠️ Technology Stack
 
 - **Frontend**: Pure HTML5, CSS3, JavaScript (ES6+)
-- **APIs**: OpenAI, Anthropic, Google AI
+- **APIs**: OpenAI, Anthropic (Claude)
 - **Styling**: Modern CSS with gradients and animations
 - **Python Backend** (optional): pandas, numpy, tiktoken, toon-python
 - **No Dependencies**: Web app works in any modern browser
@@ -508,7 +510,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [TOON Python Library](https://pypi.org/project/toon-python/) - Python implementation
 - [OpenAI API](https://platform.openai.com/) - GPT models
 - [Anthropic API](https://www.anthropic.com/) - Claude models
-- [Google AI](https://ai.google.dev/) - Gemini models
 
 ## 👤 Author
 
@@ -519,7 +520,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🙏 Acknowledgments
 
 - Token Oriented Object Notation (TOON) format
-- OpenAI, Anthropic, and Google AI for their LLM APIs
+- OpenAI and Anthropic for their LLM APIs
 - The open-source community
 
 ## 📮 Support
