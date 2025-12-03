@@ -225,11 +225,10 @@ Overall reduction across the entire request-response cycle.
 
 ```
 AI_Json_Toon/
+├── index.html                  # Interactive web demo (single-file app)
 ├── compare_json_vs_toon.py    # Simple comparison demo
 ├── json_vs_toon_demo.py        # Financial analysis demo with API calls
 ├── test_demo.py                # Quick test without API calls
-├── uploads/
-│   └── Financial_Statement.csv # Sample financial data
 └── README.md
 ```
 
