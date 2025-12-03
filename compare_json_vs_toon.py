@@ -27,50 +27,87 @@ def pretty_json(obj: Any) -> str:
     """
     Deterministic, pretty JSON for fair comparison.
     """
-    return json.dumps(obj, indent=2, ensure_ascii=False, sort_keys=True)
+    return json.dumps(obj, indent=2, ensure_ascii=False)
 
 
 def demo_payload() -> Any:
     """
-    Example structured data you might send to an LLM.
-    Feel free to change this to your real use case:
-    - transaction logs
-    - medical records
-    - GL lines
-    - survey responses, etc.
+    Mock financial data with pre-calculated ratios - same as in index.html
     """
     return {
-        "users": [
+        "meta": {
+            "company_name": "Demo Company",
+            "currency": "USD",
+            "note": "Financial data for demonstration",
+        },
+        "statements": {
+            "income_statement": [
+                {"Line Item": "Total Revenue", 2021: 14093300, 2022: 17025000, 2023: 14805900},
+                {"Line Item": "Total Cost of Sales", 2021: 9603000, 2022: 11773700, 2023: 10258600},
+                {"Line Item": "Gross Profit", 2021: 4490300, 2022: 5251300, 2023: 4547300},
+                {"Line Item": "Operating Expenses", 2021: 2319800, 2022: 2510600, 2023: 2544100},
+                {"Line Item": "Net Income", 2021: 1417400, 2022: 1844200, 2023: 1340100},
+            ],
+            "balance_sheet": [
+                {"Line Item": "Cash", 2021: 300500, 2022: 1173400, 2023: 1080200},
+                {"Line Item": "Inventory", 2021: 2065000, 2022: 1995300, 2023: 2043200},
+                {"Line Item": "Total Assets", 2021: 9536000, 2022: 10329900, 2023: 10480300},
+                {"Line Item": "Total Liabilities", 2021: 3442300, 2022: 3234000, 2023: 2747500},
+            ],
+        },
+        "key_ratios": [
             {
-                "id": 1,
-                "name": "Alice",
-                "role": "admin",
-                "country": "IN",
-                "active": True,
-                "score": 87.5,
+                "year": "2023",
+                "gross_profit_margin": 30.72,
+                "net_profit_margin": 9.05,
+                "operating_margin": 13.54,
+                "roe": 17.33,
+                "roa": 12.78,
+                "current_ratio": 5.66,
+                "quick_ratio": 4.92,
+                "cash_ratio": 0.39,
+                "debt_to_equity": 0.36,
+                "debt_ratio": 0.26,
+                "interest_coverage": 15.8,
+                "asset_turnover": 1.41,
+                "inventory_turnover": 5.02,
+                "operating_cashflow_ratio": 2.15,
             },
             {
-                "id": 2,
-                "name": "Bob",
-                "role": "user",
-                "country": "AE",
-                "active": False,
-                "score": 73.0,
+                "year": "2022",
+                "gross_profit_margin": 30.84,
+                "net_profit_margin": 10.83,
+                "operating_margin": 16.08,
+                "roe": 23.88,
+                "roa": 17.86,
+                "current_ratio": 3.55,
+                "quick_ratio": 2.89,
+                "cash_ratio": 0.36,
+                "debt_to_equity": 0.42,
+                "debt_ratio": 0.31,
+                "interest_coverage": 18.2,
+                "asset_turnover": 1.65,
+                "inventory_turnover": 5.9,
+                "operating_cashflow_ratio": 1.98,
             },
             {
-                "id": 3,
-                "name": "Charlie",
-                "role": "analyst",
-                "country": "UK",
-                "active": True,
-                "score": 91.2,
+                "year": "2021",
+                "gross_profit_margin": 31.86,
+                "net_profit_margin": 10.06,
+                "operating_margin": 15.39,
+                "roe": 22.97,
+                "roa": 14.87,
+                "current_ratio": 4.16,
+                "quick_ratio": 3.42,
+                "cash_ratio": 0.09,
+                "debt_to_equity": 0.56,
+                "debt_ratio": 0.36,
+                "interest_coverage": 16.5,
+                "asset_turnover": 1.48,
+                "inventory_turnover": 4.65,
+                "operating_cashflow_ratio": 2.24,
             },
         ],
-        "meta": {
-            "source_system": "CRM",
-            "snapshot_at": "2025-11-30T10:15:00Z",
-            "description": "User access & scores for quarterly review.",
-        },
     }
 
 
@@ -79,18 +116,25 @@ def compare_formats(data: Any, model: str = "gpt-4o-mini") -> None:
     json_str = pretty_json(data)
 
     json_prompt = (
-        "You are an AI analyst.\n"
-        "Use the following JSON data to summarise user roles and highlight risky users.\n\n"
-        f"DATA_JSON:\n{json_str}\n"
+        "You are a senior financial analyst. Analyse the company's financial performance using the data I provide.\n\n"
+        "Use the data below (in JSON or TOON format) and structure your answer under exactly these four headings (Markdown H2):\n\n"
+        "## 1. Revenue and Profitability\n"
+        "## 2. Balance Sheet and Financial Position\n"
+        "## 3. Cash Flow Quality\n"
+        "## 4. Key Ratios and Overall Assessment\n\n"
+        f"```json\n{json_str}\n```\n"
     )
 
     # 2) Build prompt with TOON
     toon_str = toon_encode(data)
 
     toon_prompt = (
-        "You are an AI analyst.\n"
-        "Use the following TOON data to summarise user roles and highlight risky users.\n\n"
-        "DATA_TOON:\n"
+        "You are a senior financial analyst. Analyse the company's financial performance using the data I provide.\n\n"
+        "Use the data below (in JSON or TOON format) and structure your answer under exactly these four headings (Markdown H2):\n\n"
+        "## 1. Revenue and Profitability\n"
+        "## 2. Balance Sheet and Financial Position\n"
+        "## 3. Cash Flow Quality\n"
+        "## 4. Key Ratios and Overall Assessment\n\n"
         f"{toon_str}\n"
     )
 

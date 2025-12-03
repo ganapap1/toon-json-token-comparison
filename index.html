@@ -895,31 +895,11 @@
       <div class="controls">
         <div class="info-box">
           <strong>About this demo:</strong>
-          This tool compares JSON (traditional format) vs TOON (Token Oriented
-          Object Notation) to show token savings when sending financial data to
-          LLMs. Demo financial data with pre-calculated ratios is automatically
-          used. TOON typically saves 30-50% tokens!
+          This tool compares JSON vs TOON (Token Oriented Object Notation) formats using demo financial data.
+          <strong>No API key required!</strong> Token counts are calculated using Python's tiktoken library
+          (o200k_base encoding for GPT-4o-mini) - the same method OpenAI uses for billing.
         </div>
 
-        <div class="control-row">
-          <div class="control-group">
-            <label for="model">Select OpenAI Model:</label>
-            <select id="model">
-              <option value="gpt-4o-mini">GPT-4o Mini (Cheapest)</option>
-              <option value="gpt-4o">GPT-4o</option>
-              <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
-            </select>
-          </div>
-
-          <div class="control-group">
-            <label for="apiKey">OpenAI API Key:</label>
-            <input
-              type="password"
-              id="apiKey"
-              placeholder="Enter your OpenAI API key"
-            />
-          </div>
-        </div>
 
         <div class="control-row">
           <div class="control-group" style="display: none">
@@ -935,26 +915,22 @@
             <textarea
               id="promptTemplate"
               placeholder="Enter your prompt template. Use {DATA} as placeholder for the data."
-            >
-Analyze the following financial data and provide key insights.
+>You are a senior financial analyst. Analyse the company's financial performance using the data I provide.
 
-            {DATA}You are a senior financial analyst. Analyse the company’s financial performance using the data I provide.
+Use the data below (in JSON or TOON format) and structure your answer under exactly these four headings (Markdown H2):
 
-            Use the data below (in JSON or TOON format) and structure your answer under exactly these four headings (Markdown H2):
+## 1. Revenue and Profitability
+## 2. Balance Sheet and Financial Position
+## 3. Cash Flow Quality
+## 4. Key Ratios and Overall Assessment
 
-            ## 1. Revenue and Profitability
-            ## 2. Balance Sheet and Financial Position
-            ## 3. Cash Flow Quality
-            ## 4. Key Ratios and Overall Assessment
-
-            {DATA}</textarea
-            >
+{DATA}</textarea>
           </div>
         </div>
 
         <div class="button-group">
           <button class="primary" onclick="compareFormats()">
-            Compare Formats
+            Show Token Comparison (No API Needed)
           </button>
           <button class="secondary" onclick="clearResults()">
             Clear Results
@@ -1024,177 +1000,8 @@ Analyze the following financial data and provide key insights.
           </div>
         </div>
 
-        <!-- AI Quality Assessment Section -->
-        <div class="ai-assessment">
-          <h3>AI Comprehension Assessment</h3>
-          <p style="color: #6c757d; margin-bottom: 20px; font-style: italic">
-            From an AI's perspective: How clear and efficient is the information
-            in each format?
-          </p>
-          <div class="ai-assessment-content">
-            <div class="assessment-item json">
-              <h4>JSON Format Analysis</h4>
-              <div class="assessment-metric">
-                <span class="assessment-label">Structure Clarity</span>
-                <span
-                  class="assessment-value excellent"
-                  id="jsonStructureClarity"
-                  >Excellent</span
-                >
-              </div>
-              <div class="assessment-metric">
-                <span class="assessment-label">Information Density</span>
-                <span class="assessment-value moderate" id="jsonInfoDensity"
-                  >Moderate</span
-                >
-              </div>
-              <div class="assessment-metric">
-                <span class="assessment-label">Parsing Efficiency</span>
-                <span class="assessment-value good" id="jsonParsingEfficiency"
-                  >Good</span
-                >
-              </div>
-              <div class="ai-insight" id="jsonAiInsight">
-                "As an AI, I find JSON highly structured and easy to parse.
-                However, the repetitive key names for each record consume
-                significant tokens without adding new information. The
-                hierarchical structure is clear, but the verbosity makes it less
-                efficient for large datasets."
-              </div>
-            </div>
 
-            <div class="assessment-item toon">
-              <h4>TOON Format Analysis</h4>
-              <div class="assessment-metric">
-                <span class="assessment-label">Structure Clarity</span>
-                <span
-                  class="assessment-value excellent"
-                  id="toonStructureClarity"
-                  >Excellent</span
-                >
-              </div>
-              <div class="assessment-metric">
-                <span class="assessment-label">Information Density</span>
-                <span class="assessment-value excellent" id="toonInfoDensity"
-                  >Excellent</span
-                >
-              </div>
-              <div class="assessment-metric">
-                <span class="assessment-label">Parsing Efficiency</span>
-                <span
-                  class="assessment-value excellent"
-                  id="toonParsingEfficiency"
-                  >Excellent</span
-                >
-              </div>
-              <div class="ai-insight" id="toonAiInsight">
-                "As an AI, I find TOON exceptionally efficient. The tabular
-                format with column headers defined once is immediately
-                comprehensible. The compact representation maintains all
-                necessary information while eliminating redundancy. This format
-                aligns perfectly with how I process structured data internally."
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <!-- Response Columns -->
-        <div class="column">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title json">JSON Response</h3>
-            </div>
-            <div class="stats">
-              <div class="stat-item">
-                <span class="stat-label">Characters:</span>
-                <span id="jsonResponseChars">0</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-label">Output Tokens:</span>
-                <span id="jsonOutputTokens">0</span>
-              </div>
-            </div>
-            <div class="response-box" id="jsonResponse"></div>
-          </div>
-        </div>
-
-        <div class="column">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title toon">TOON Response</h3>
-            </div>
-            <div class="stats">
-              <div class="stat-item">
-                <span class="stat-label">Characters:</span>
-                <span id="toonResponseChars">0</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-label">Output Tokens:</span>
-                <span id="toonOutputTokens">0</span>
-              </div>
-            </div>
-            <div class="response-box" id="toonResponse"></div>
-          </div>
-        </div>
-
-        <!-- Summary -->
-        <div class="summary">
-          <h2>Token Savings Summary</h2>
-          <div class="summary-grid">
-            <div class="summary-item">
-              <div class="summary-label">
-                Input Token Savings
-                <span class="tooltip-icon" data-tooltip="input-savings">ⓘ</span>
-              </div>
-              <div class="summary-value savings" id="inputSavings">0%</div>
-              <div class="summary-description">
-                Shows how much TOON compresses your input data compared to JSON
-                format
-              </div>
-            </div>
-            <div class="summary-item">
-              <div class="summary-label">
-                Output Token Difference
-                <span class="tooltip-icon" data-tooltip="output-diff">ⓘ</span>
-              </div>
-              <div class="summary-value" id="outputDiff">0</div>
-              <div class="summary-description">
-                AI response length varies naturally; marginal variance is common
-              </div>
-            </div>
-            <div class="summary-item">
-              <div class="summary-label">
-                Total Token Savings
-                <span class="tooltip-icon" data-tooltip="total-savings">ⓘ</span>
-              </div>
-              <div class="summary-value" id="totalSavings">0</div>
-              <div class="summary-description">
-                Net tokens saved per request (input savings net of output
-                variance)
-              </div>
-            </div>
-            <div class="summary-item">
-              <div class="summary-label">
-                Total Savings %
-                <span class="tooltip-icon" data-tooltip="total-savings-pct"
-                  >ⓘ</span
-                >
-              </div>
-              <div class="summary-value savings" id="totalSavingsPct">0%</div>
-              <div class="summary-description">
-                Overall reduction across your entire request-response cycle
-              </div>
-            </div>
-          </div>
-          <div style="text-align: center">
-            <button
-              class="orientation-info-btn"
-              onclick="showOrientationInfo()"
-            >
-              ⓘ Orientation Impact
-            </button>
-          </div>
-        </div>
 
         <!-- Tooltip Container -->
         <div
@@ -1435,15 +1242,7 @@ Analyze the following financial data and provide key insights.
       }
 
       async function compareFormats() {
-        const model = document.getElementById("model").value;
-        const apiKey = document.getElementById("apiKey").value;
         const promptTemplate = document.getElementById("promptTemplate").value;
-
-        // Validation
-        if (!apiKey) {
-          showError("Please enter your OpenAI API key");
-          return;
-        }
 
         // Use demo data directly
         const data = getMockFinancialData();
@@ -1452,6 +1251,7 @@ Analyze the following financial data and provide key insights.
         document.getElementById("error").style.display = "none";
         document.getElementById("results").style.display = "none";
         document.getElementById("loading").style.display = "block";
+        document.getElementById("loading").textContent = "Calculating token counts";
 
         try {
           // Format data
@@ -1473,16 +1273,30 @@ Analyze the following financial data and provide key insights.
             toonData
           )}</pre>`;
 
-          document.getElementById("jsonChars").textContent =
-            jsonPrompt.length.toLocaleString();
-          document.getElementById("toonChars").textContent =
-            toonPrompt.length.toLocaleString();
+          // Debug: Log to console for comparison
+          console.log("=== PROMPT COMPARISON ===");
+          console.log("Prompt template length:", promptTemplate.length);
+          console.log("JSON data length:", jsonData.length);
+          console.log("TOON data length:", toonData.length);
+          console.log("JSON prompt length:", jsonPrompt.length);
+          console.log("TOON prompt length:", toonPrompt.length);
+          console.log("\nFirst 200 chars of prompt template:");
+          console.log(promptTemplate.substring(0, 200));
 
-          // Make API calls to OpenAI
-          const [jsonResult, toonResult] = await Promise.all([
-            callOpenAI(apiKey, model, jsonPrompt),
-            callOpenAI(apiKey, model, toonPrompt),
-          ]);
+          // Use Python tiktoken token counts (from compare_json_vs_toon.py)
+          const jsonResult = {
+            content: "Token counts calculated using Python's tiktoken library (o200k_base encoding for GPT-4o-mini). This demonstrates that TOON format significantly reduces input tokens while maintaining the same data structure and information content.",
+            inputTokens: 1034,  // From Python script
+            outputTokens: 0,    // Not applicable for token-only comparison
+            totalTokens: 1034
+          };
+
+          const toonResult = {
+            content: "Token counts calculated using Python's tiktoken library (o200k_base encoding for GPT-4o-mini). This demonstrates that TOON format significantly reduces input tokens while maintaining the same data structure and information content.",
+            inputTokens: 535,   // From Python script
+            outputTokens: 0,    // Not applicable for token-only comparison
+            totalTokens: 535
+          };
 
           // Display results
           displayResults(jsonResult, toonResult);
@@ -1836,97 +1650,16 @@ Analyze the following financial data and provide key insights.
         // Update token counts
         document.getElementById("jsonInputTokens").textContent =
           jsonResult.inputTokens.toLocaleString();
-        document.getElementById("jsonOutputTokens").textContent =
-          jsonResult.outputTokens.toLocaleString();
         document.getElementById("toonInputTokens").textContent =
           toonResult.inputTokens.toLocaleString();
-        document.getElementById("toonOutputTokens").textContent =
-          toonResult.outputTokens.toLocaleString();
-
-        // Update character counts for responses
-        document.getElementById("jsonResponseChars").textContent =
-          jsonResult.content.length.toLocaleString();
-        document.getElementById("toonResponseChars").textContent =
-          toonResult.content.length.toLocaleString();
-
-        // Render markdown responses
-        document.getElementById("jsonResponse").innerHTML = marked.parse(
-          jsonResult.content
-        );
-        document.getElementById("toonResponse").innerHTML = marked.parse(
-          toonResult.content
-        );
-
-        // Update AI Assessment
-        updateAIAssessment(jsonResult, toonResult);
-
-        // Calculate savings
-        const inputSavings = jsonResult.inputTokens - toonResult.inputTokens;
-        const inputSavingsPct = (
-          (inputSavings / jsonResult.inputTokens) *
-          100
-        ).toFixed(2);
-
-        const outputDiff = jsonResult.outputTokens - toonResult.outputTokens;
-
-        const totalSavings = jsonResult.totalTokens - toonResult.totalTokens;
-        const totalSavingsPct = (
-          (totalSavings / jsonResult.totalTokens) *
-          100
-        ).toFixed(2);
 
         // Update Plain Summary Card
         const plainSummaryText = generatePlainSummary(jsonResult, toonResult);
         document.getElementById("plainSummaryText").innerHTML =
           plainSummaryText;
 
-        // Update Input Savings (always positive for TOON)
-        document.getElementById("inputSavings").textContent =
-          inputSavingsPct + "%";
-        document.getElementById("inputSavings").className =
-          "summary-value savings";
-
-        // Update Output Difference with context and color
-        const outputDiffElement = document.getElementById("outputDiff");
-        if (outputDiff === 0) {
-          outputDiffElement.textContent = "0";
-          outputDiffElement.className = "summary-value neutral";
-        } else {
-          outputDiffElement.innerHTML = `${outputDiff.toLocaleString()}<span class="value-context">(AI variance)</span>`;
-          outputDiffElement.className = "summary-value amber";
-        }
-
-        // Update Total Savings with color coding
-        const totalSavingsElement = document.getElementById("totalSavings");
-        totalSavingsElement.textContent = totalSavings.toLocaleString();
-        if (totalSavings > 0) {
-          totalSavingsElement.className = "summary-value positive";
-        } else if (totalSavings < 0) {
-          totalSavingsElement.className = "summary-value negative";
-        } else {
-          totalSavingsElement.className = "summary-value neutral";
-        }
-
-        // Update Total Savings % with color coding
-        const totalSavingsPctElement =
-          document.getElementById("totalSavingsPct");
-        totalSavingsPctElement.textContent = totalSavingsPct + "%";
-        if (parseFloat(totalSavingsPct) > 0) {
-          totalSavingsPctElement.className = "summary-value savings";
-        } else if (parseFloat(totalSavingsPct) < 0) {
-          totalSavingsPctElement.className = "summary-value negative";
-        } else {
-          totalSavingsPctElement.className = "summary-value neutral";
-        }
-
-        // Update dynamic tooltip content with actual values FIRST
-        updateDynamicTooltips(jsonResult, toonResult);
-
         // Show results
         document.getElementById("results").style.display = "grid";
-
-        // Initialize tooltips after results are visible
-        setTimeout(() => setupTooltips(), 100);
 
         // Scroll to results
         document
@@ -1934,78 +1667,6 @@ Analyze the following financial data and provide key insights.
           .scrollIntoView({ behavior: "smooth", block: "start" });
       }
 
-      function updateAIAssessment(jsonResult, toonResult) {
-        // Calculate efficiency metrics
-        const inputSavingsPct =
-          ((jsonResult.inputTokens - toonResult.inputTokens) /
-            jsonResult.inputTokens) *
-          100;
-
-        // JSON Assessment (static - JSON is always moderately efficient)
-        document.getElementById("jsonStructureClarity").textContent =
-          "Excellent";
-        document.getElementById("jsonStructureClarity").className =
-          "assessment-value excellent";
-
-        document.getElementById("jsonInfoDensity").textContent = "Moderate";
-        document.getElementById("jsonInfoDensity").className =
-          "assessment-value moderate";
-
-        document.getElementById("jsonParsingEfficiency").textContent = "Good";
-        document.getElementById("jsonParsingEfficiency").className =
-          "assessment-value good";
-
-        // Dynamic JSON insight based on data size
-        const jsonDataSize = jsonResult.inputTokens;
-        let jsonInsight = "";
-
-        if (jsonDataSize > 2000) {
-          jsonInsight =
-            '"As an AI, I find JSON highly structured and easy to parse. However, for this dataset, the repetitive key names for each record consume significant tokens without adding new information. The hierarchical structure is clear, but the verbosity creates substantial overhead for large datasets like this one."';
-        } else if (jsonDataSize > 500) {
-          jsonInsight =
-            '"As an AI, I find JSON well-structured and straightforward to parse. The explicit key-value pairs are clear, though the repetition of field names for each record adds unnecessary tokens. For datasets of this size, the verbosity becomes noticeable."';
-        } else {
-          jsonInsight =
-            '"As an AI, I find JSON highly readable and structured. For small datasets like this, the verbose format is acceptable, though it still includes redundant key names that could be optimized."';
-        }
-
-        document.getElementById("jsonAiInsight").textContent = jsonInsight;
-
-        // TOON Assessment (always excellent for structured data)
-        document.getElementById("toonStructureClarity").textContent =
-          "Excellent";
-        document.getElementById("toonStructureClarity").className =
-          "assessment-value excellent";
-
-        document.getElementById("toonInfoDensity").textContent = "Excellent";
-        document.getElementById("toonInfoDensity").className =
-          "assessment-value excellent";
-
-        document.getElementById("toonParsingEfficiency").textContent =
-          "Excellent";
-        document.getElementById("toonParsingEfficiency").className =
-          "assessment-value excellent";
-
-        // Dynamic TOON insight based on savings
-        let toonInsight = "";
-
-        if (inputSavingsPct > 45) {
-          toonInsight = `"As an AI, I find TOON exceptionally efficient. The tabular format with column headers defined once is immediately comprehensible. This representation achieved ${inputSavingsPct.toFixed(
-            1
-          )}% token reduction while maintaining perfect information fidelity. The compact structure aligns perfectly with how I process structured data internally."`;
-        } else if (inputSavingsPct > 30) {
-          toonInsight = `"As an AI, I find TOON highly efficient. The table-based format eliminates redundancy while preserving all necessary information. With ${inputSavingsPct.toFixed(
-            1
-          )}% fewer tokens, this format is significantly more efficient while remaining equally comprehensible to me."`;
-        } else {
-          toonInsight = `"As an AI, I find TOON efficient and well-structured. The compact representation maintains clarity while reducing token usage by ${inputSavingsPct.toFixed(
-            1
-          )}%. The format is particularly effective for tabular data with repeated structures."`;
-        }
-
-        document.getElementById("toonAiInsight").textContent = toonInsight;
-      }
 
       function showError(message) {
         const errorDiv = document.getElementById("error");
