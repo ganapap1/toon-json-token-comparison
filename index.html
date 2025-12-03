@@ -896,8 +896,8 @@
         <div class="info-box">
           <strong>About this demo:</strong>
           This tool compares JSON (traditional format) vs TOON (Token Oriented
-          Object Notation) to show token savings when sending structured data to
-          LLMs. TOON typically saves 40-50% tokens!
+          Object Notation) to show token savings when sending financial data to
+          LLMs. Demo financial data with pre-calculated ratios is automatically used. TOON typically saves 30-50% tokens!
         </div>
 
         <div class="control-row">
@@ -921,59 +921,22 @@
         </div>
 
         <div class="control-row">
-          <div class="control-group">
+          <div class="control-group" style="display: none;">
             <label for="dataInput">Structured Data (JSON format):</label>
             <textarea
               id="dataInput"
-              placeholder='Enter your structured data in JSON format, e.g., {"users": [{"id": 1, "name": "Alice"}]}'
+              placeholder='Demo financial data will be used automatically'
             ></textarea>
-            <div>
-              <button class="load-demo-btn" onclick="loadDemoData()">
-                Load Demo Financial Data
-              </button>
-              <span
-                id="dataLoadStatus"
-                class="data-load-status"
-                style="display: none"
-              >
-                ✓ Financial data loaded! Now click "Compare Formats" button
-              </span>
-            </div>
           </div>
 
-          <div class="control-group">
+          <div class="control-group" style="display: none;">
             <label for="promptTemplate">Prompt Template:</label>
             <textarea
               id="promptTemplate"
               placeholder="Enter your prompt template. Use {DATA} as placeholder for the data."
-            >
-You are a senior financial analyst. Analyze the financial data and provide actionable insights.
+            >Analyze the following financial data and provide key insights.
 
-Structure your analysis as follows:
-
-## 1. Executive Summary
-Provide a concise assessment of the company's overall financial trajectory from 2021-2023. What's the big picture story?
-
-## 2. Profitability Analysis
-What's really driving the changes in profitability? Don't just list ratios—explain WHY margins are changing and what management should focus on.
-
-## 3. Liquidity and Solvency
-Assess the company's ability to meet obligations. Are there any red flags or strengths in working capital management?
-
-## 4. Efficiency Analysis
-How effectively is the company using its assets? Where are the operational bottlenecks or improvements?
-
-## 5. Strategic Recommendations
-Based on the data, provide 3-4 specific, actionable recommendations that address the key issues you've identified.
-
-DATA:
-{DATA}
-
-Guidelines:
-- Focus on insights, not just numbers
-- Explain the "why" behind trends
-- Be specific and actionable
-- Use ## for headers and • for bullets</textarea
+{DATA}</textarea
             >
           </div>
         </div>
@@ -1273,8 +1236,9 @@ Guidelines:
         "gpt-3.5-turbo": "cl100k_base",
       };
 
-      function loadDemoData() {
-        const demoData = {
+      // Mock financial data with pre-calculated ratios
+      function getMockFinancialData() {
+        return {
           meta: {
             company_name: "Demo Company",
             currency: "USD",
@@ -1282,62 +1246,17 @@ Guidelines:
           },
           statements: {
             income_statement: [
-              {
-                "Line Item": "Total Revenue",
-                2023: 14805900,
-                2022: 17025000,
-                2021: 14093300,
-              },
-              {
-                "Line Item": "Total Cost of Sales",
-                2023: 10258600,
-                2022: 11773700,
-                2021: 9603000,
-              },
-              {
-                "Line Item": "Gross Profit",
-                2023: 4547300,
-                2022: 5251300,
-                2021: 4490300,
-              },
-              {
-                "Line Item": "Operating Expenses",
-                2023: 2544100,
-                2022: 2510600,
-                2021: 2319800,
-              },
-              {
-                "Line Item": "Net Income",
-                2023: 1340100,
-                2022: 1844200,
-                2021: 1417400,
-              },
+              { "Line Item": "Total Revenue", 2021: 14093300, 2022: 17025000, 2023: 14805900 },
+              { "Line Item": "Total Cost of Sales", 2021: 9603000, 2022: 11773700, 2023: 10258600 },
+              { "Line Item": "Gross Profit", 2021: 4490300, 2022: 5251300, 2023: 4547300 },
+              { "Line Item": "Operating Expenses", 2021: 2319800, 2022: 2510600, 2023: 2544100 },
+              { "Line Item": "Net Income", 2021: 1417400, 2022: 1844200, 2023: 1340100 },
             ],
             balance_sheet: [
-              {
-                "Line Item": "Cash",
-                2023: 1080200,
-                2022: 1173400,
-                2021: 300500,
-              },
-              {
-                "Line Item": "Inventory",
-                2023: 2043200,
-                2022: 1995300,
-                2021: 2065000,
-              },
-              {
-                "Line Item": "Total Assets",
-                2023: 10480300,
-                2022: 10329900,
-                2021: 9536000,
-              },
-              {
-                "Line Item": "Total Liabilities",
-                2023: 2747500,
-                2022: 3234000,
-                2021: 3442300,
-              },
+              { "Line Item": "Cash", 2021: 300500, 2022: 1173400, 2023: 1080200 },
+              { "Line Item": "Inventory", 2021: 2065000, 2022: 1995300, 2023: 2043200 },
+              { "Line Item": "Total Assets", 2021: 9536000, 2022: 10329900, 2023: 10480300 },
+              { "Line Item": "Total Liabilities", 2021: 3442300, 2022: 3234000, 2023: 2747500 },
             ],
           },
           key_ratios: [
@@ -1394,17 +1313,8 @@ Guidelines:
             },
           ],
         };
-
-        document.getElementById("dataInput").value = JSON.stringify(
-          demoData,
-          null,
-          2
-        );
-
-        // Show success status message
-        const statusDiv = document.getElementById("dataLoadStatus");
-        statusDiv.style.display = "inline-block";
       }
+
 
       // Simple TOON encoder (JavaScript implementation)
       function encodeToTOON(obj, indent = 0) {
@@ -1470,7 +1380,6 @@ Guidelines:
       async function compareFormats() {
         const model = document.getElementById("model").value;
         const apiKey = document.getElementById("apiKey").value;
-        const dataInput = document.getElementById("dataInput").value;
         const promptTemplate = document.getElementById("promptTemplate").value;
 
         // Validation
@@ -1479,18 +1388,8 @@ Guidelines:
           return;
         }
 
-        if (!dataInput) {
-          showError("Please enter structured data");
-          return;
-        }
-
-        let data;
-        try {
-          data = JSON.parse(dataInput);
-        } catch (e) {
-          showError("Invalid JSON format in data input: " + e.message);
-          return;
-        }
+        // Use demo data directly
+        const data = getMockFinancialData();
 
         // Hide error and results, show loading
         document.getElementById("error").style.display = "none";
