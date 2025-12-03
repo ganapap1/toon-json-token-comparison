@@ -9,7 +9,7 @@ A powerful interactive web tool that demonstrates token efficiency differences b
 
 ## 💡 Why This Matters for Financial Analysis
 
-When you send financial statements with calculated ratios to AI (GPT-4, Claude) for analysis, **you're paying for every token**. JSON format repeats keys like "Total Revenue", "Gross Profit", "Current Ratio" for every single data point.
+When you send financial statements with calculated ratios to AI (GPT-4, GPT-4o) for analysis, **you're paying for every token**. JSON format repeats keys like "Total Revenue", "Gross Profit", "Current Ratio" for every single data point.
 
 **TOON eliminates this repetition**, saving you **30-50% on input tokens**—directly reducing your AI API costs without changing your application logic.
 
@@ -30,8 +30,8 @@ It then measures and displays the actual token usage, cost savings, and efficien
 ## ✨ Key Features
 
 ### 📊 Real-Time Token Analysis
-- Live comparison using OpenAI or Anthropic APIs
-- Actual token counts from LLM providers (not estimates)
+- Live comparison using OpenAI API
+- Actual token counts from OpenAI (not estimates)
 - Side-by-side format visualization
 
 ### 💰 Cost Impact Calculator
@@ -63,7 +63,7 @@ It then measures and displays the actual token usage, cost savings, and efficien
 **Try it now:** coming soon on YouTube
 
 - ✅ Single-file HTML application (no installation required)
-- ✅ Real-time comparison with OpenAI and Anthropic APIs
+- ✅ Real-time comparison with OpenAI API
 - ✅ Side-by-side JSON vs TOON display
 - ✅ Live token counting and savings calculation
 - ✅ Beautiful, responsive UI with dark green theme
@@ -181,28 +181,21 @@ python json_vs_toon_demo.py
 
 ## 🔧 How to Use the Web App
 
-1. **Select Your LLM Provider**
-   - OpenAI (GPT models)
-   - Anthropic (Claude models)
+1. **Select OpenAI Model**
+   - GPT-4o Mini (Cheapest)
+   - GPT-4o
+   - GPT-3.5 Turbo
 
-2. **Choose a Model**
-   - **OpenAI:**
-     - GPT-4o Mini (Cheapest)
-     - GPT-4o
-     - GPT-3.5 Turbo
-   - **Anthropic:**
-     - Claude 3.5 Haiku (Cheapest)
-     - Claude 3.5 Sonnet
+2. **Enter Your OpenAI API Key**
+   - Get your key from [OpenAI Platform](https://platform.openai.com/api-keys)
+   - Keys are stored locally in your browser only
+   - Never sent to any server except OpenAI
 
-3. **Enter Your API Key**
-   - Get keys from provider dashboards ([OpenAI](https://platform.openai.com/api-keys) | [Anthropic](https://console.anthropic.com/))
-   - Keys are stored locally in your browser only (not sent to any server except the API provider)
-
-4. **Load Demo Data or Paste Your Own**
+3. **Load Demo Data or Paste Your Own**
    - Click "Load Demo Financial Data" to test with real financial statements and ratios
    - Or paste your own financial data in JSON format
 
-5. **Compare Formats**
+4. **Compare Formats**
    - Click "Compare Formats" button
    - View real-time results with token counts and cost analysis
 
@@ -436,7 +429,7 @@ For **enterprise scale (100,000 requests/month)**:
    - TOON format: tabular/spreadsheet-like structure
    - Live demo walkthrough
    - Loading financial statement with P&L, Balance Sheet, Cash Flow, and calculated ratios
-   - Sending to Claude AI in both formats
+   - Sending to OpenAI in both formats
 
 4. **Walking Through Results** (1:30-2:20)
    - Plain language summary showing 40%+ savings
@@ -485,7 +478,7 @@ Hover over the ⓘ icons to see:
 ## 🛠️ Technology Stack
 
 - **Frontend**: Pure HTML5, CSS3, JavaScript (ES6+)
-- **APIs**: OpenAI, Anthropic (Claude)
+- **API**: OpenAI (GPT models)
 - **Styling**: Modern CSS with gradients and animations
 - **Python Backend** (optional): pandas, numpy, tiktoken, toon-python
 - **No Dependencies**: Web app works in any modern browser
@@ -509,7 +502,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - [TOON Python Library](https://pypi.org/project/toon-python/) - Python implementation
 - [OpenAI API](https://platform.openai.com/) - GPT models
-- [Anthropic API](https://www.anthropic.com/) - Claude models
+- [OpenAI API Documentation](https://platform.openai.com/docs/api-reference) - API reference
 
 ## 👤 Author
 
@@ -520,7 +513,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🙏 Acknowledgments
 
 - Token Oriented Object Notation (TOON) format
-- OpenAI and Anthropic for their LLM APIs
+- OpenAI for their GPT models and API
 - The open-source community
 
 ## 📮 Support
